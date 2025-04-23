@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+  <h2>Camera: {{ cam.name }}</h2>
+  {% if error %}
+    <div class="alert alert-danger">{{ error }}</div>
+  {% else %}
+    <img src="{{ url_for('video_feed') }}" class="img-fluid" alt="Camera Feed">
+  {% endif %}
+{% endblock %}

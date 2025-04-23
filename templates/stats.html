@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% block content %}
+  <h2>Statistics</h2>
+
+  <div class="row">
+    <div class="col-md-6">
+      <canvas id="statsChart"></canvas>
+    </div>
+    <div class="col-md-6">
+      <h4>Counts:</h4>
+      <ul class="list-group">
+        <li class="list-group-item">Red Ripe: {{ red_count }}</li>
+        <li class="list-group-item">Yellow Ripe: {{ yellow_count }}</li>
+        <li class="list-group-item">Unripe: {{ unripe_count }}</li>
+        <li class="list-group-item">Total Ripe: {{ total_ripe }}</li>
+      </ul>
+    </div>
+  </div>
+
+  <hr>
+
+  <h3>Filter Recognitions</h3>
+  <form method="GET" action="{{ url_for('stats') }}" class="mb-3">
+    <div class="mb-3">
+      <label for="filter_class" class="form-label">Filter by Classification:</label>
+      <select class="form-select" id="filter_class" name="filter_class">
+        <option value="all" {% if filter_class=='all' %}selected{% endif %}>All</option>
+        <option value="Ripe" {% if filter_class=='Ripe' %}selected{% endif %}>Red Ripe</option>
+        <option value="Yellow" {% if filter_class=='Yellow' %}selected{% endif %}>Yellow Ripe</option>
+        <option value="Unripe" {% if filter_class=='Unripe' %}selected{% endif %}>Unripe</option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Apply Filter</button>
+  </form>
+
+  <h3>Recognition Data</h3>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Timestamp</th>
+        <th>Tomato ID</th>
+        <th>Classification</th>
+        <th>Ripeness (%)</th>
+        <th>Is Ripe</th>
+        <th>Time to Harvest</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for rec in records %}
+      <tr>
+        <td>{{ rec.id }}</td>
+        <td>{{ rec.timestamp }}</td>
+        <td>{{ rec.tomato_id }}</td>
+        <td>{{ rec.classification }}</td>
+        <td>{{ rec.ripeness_percentage }}</td>
+        <td>{{ rec.is_ripe }}</td>
+        <td>{{ rec.time_to_harvest }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    var ctx = document.getElementById('statsChart').getContext('2d');
+    var statsChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Red Ripe', 'Yellow Ripe', 'Unripe', 'Total Ripe'],
+        datasets: [{
+          label: 'Count',
+          data: [{{ red_count }}, {{ yellow_count }}, {{ unripe_count }}, {{ total_ripe }}],
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.5)',
+            'rgba(255, 205, 86, 0.5)',
+            'rgba(75, 192, 192, 0.5)',
+            'rgba(54, 162, 235, 0.5)'
+          ],
+          borderColor: [
+            'rgb(255, 99, 132)',
+            'rgb(255, 205, 86)',
+            'rgb(75, 192, 192)',
+            'rgb(54, 162, 235)'
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: { beginAtZero: true }
+        }
+      }
+    });
+  </script>
+{% endblock %}

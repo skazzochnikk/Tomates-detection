@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+  <h2>Settings</h2>
+  <form method="POST">
+    <div class="mb-3">
+      <label for="desired_ripeness" class="form-label">Desired Ripeness Filter</label>
+      <select class="form-select" name="desired_ripeness" id="desired_ripeness">
+        <option value="both" {% if settings.desired_ripeness=='both' %}selected{% endif %}>Both (Red & Yellow)</option>
+        <option value="red" {% if settings.desired_ripeness=='red' %}selected{% endif %}>Red (Ripe)</option>
+        <option value="yellow" {% if settings.desired_ripeness=='yellow' %}selected{% endif %}>Yellow</option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="conf_threshold" class="form-label">Confidence Threshold</label>
+      <input type="number" step="0.1" class="form-control" name="conf_threshold" id="conf_threshold" value="{{ settings.conf_threshold }}" required>
+    </div>
+    <div class="mb-3">
+      <label for="max_harvest_time" class="form-label">Max Harvest Time (days)</label>
+      <input type="number" step="0.1" class="form-control" name="max_harvest_time" id="max_harvest_time" value="{{ settings.max_harvest_time }}" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Save Settings</button>
+  </form>
+{% endblock %}
