@@ -15,5 +15,5 @@ Tomato Ripeness Recognition System — это веб-приложение на F
 ## Установка
 
 ```bash
-gh repo clone skazzochnikk/Skazart
+gh repo clone skazzochnikk/Tomates-detection
 pip install -r requirements.txt
